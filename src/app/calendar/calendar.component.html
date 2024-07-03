@@ -1,0 +1,15 @@
+<div class="calendar-container">
+  <div class="calendar-view">
+    <app-create-appointment
+      [selectedDate]="selected()"
+    ></app-create-appointment>
+
+    <mat-card class="calendar-card">
+      <mat-calendar [(selected)]="selected"></mat-calendar>
+    </mat-card>
+  </div>
+
+  <div class="appointments">
+    <app-appointments [selectedDate]="selected()"></app-appointments>
+  </div>
+</div>
