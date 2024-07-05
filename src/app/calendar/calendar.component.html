@@ -1,8 +1,12 @@
 <div class="calendar-container">
   <div class="calendar-view">
-    <app-create-appointment
-      [selectedDate]="selected()"
-    ></app-create-appointment>
+    @defer (on viewport) {
+      <app-create-appointment
+        [selectedDate]="selected()"
+      ></app-create-appointment>
+    } @placeholder {
+      <p>Create appointment form is loading...</p>
+    }
 
     <mat-card class="calendar-card">
       <mat-calendar [(selected)]="selected"></mat-calendar>
@@ -10,6 +14,10 @@
   </div>
 
   <div class="appointments">
-    <app-appointments [selectedDate]="selected()"></app-appointments>
+    @defer (on viewport) {
+      <app-appointments [selectedDate]="selected()"></app-appointments>
+    } @placeholder {
+      <p>Appointments are loading...</p>
+    }
   </div>
 </div>

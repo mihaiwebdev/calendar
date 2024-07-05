@@ -2,25 +2,27 @@
 <div class="container">
   <div class="hours-container">
     @for (hour of hours; track hour) {
-      <p class="hour-label">{{ hour }}</p>
+      <p class="hour-label">{{ hour | amPm }}</p>
     }
   </div>
 
-  <div
-    cdkDropList
-    class="appointments-container"
-    (cdkDropListDropped)="drop($event)"
-  >
+  <div cdkDropListGroup class="hour-rows-container">
+    <div class="separator"></div>
+
     @for (hour of hours; track hour) {
-      <div cdkDrag class="appointment-container">
-        @if (appointments().length > 0) {
-          @for (appointment of appointments(); track $index) {
-            @if (appointment.hour === hour) {
-              <div class="appointment">
-                <p>{{ appointment.name }}</p>
-                <button (click)="deleteAppointment(appointment)">X</button>
-              </div>
-            }
+      <div
+        cdkDropList
+        class="hour-row"
+        (cdkDropListDropped)="drop($event, hour)"
+      >
+        @for (appointment of appointments(); track appointment.id) {
+          @if (appointment.start === hour) {
+            <app-appointment
+              cdkDrag
+              [id]="'appointment-' + appointment.id"
+              [appointment]="appointment"
+            >
+            </app-appointment>
           }
         }
       </div>

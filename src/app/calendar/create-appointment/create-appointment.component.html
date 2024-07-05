@@ -1,33 +1,3 @@
-<form [formGroup]="form">
-  <h1>Create an appointment</h1>
-  <mat-form-field class="form-field">
-    <mat-label>Name</mat-label>
-    <input
-      type="text"
-      matInput
-      formControlName="name"
-      placeholder="Ex. Go to dentist"
-    />
-    @if (nameControl.touched && nameControl.invalid) {
-      <mat-error>Name is invalid</mat-error>
-    }
-  </mat-form-field>
-
-  <mat-form-field class="form-field">
-    <mat-label>Hour</mat-label>
-    <input
-      type="number"
-      max="24"
-      matInput
-      formControlName="hour"
-      placeholder="Ex. 10"
-    />
-    @if (hourControl.touched && hourControl.invalid) {
-      <mat-error>Hour is invalid</mat-error>
-    }
-  </mat-form-field>
-
-  <button (click)="onSubmit()" mat-raised-button class="create-btn">
-    Add appointment
-  </button>
-</form>
+<button class="create-btn" mat-raised-button (click)="openDialog()">
+  + Create
+</button>

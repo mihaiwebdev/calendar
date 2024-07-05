@@ -1,59 +1,29 @@
-import { Component, inject, input } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
 import { AppointmentModel } from '../../core/models/appointment.model';
-import { AppointmentsService } from '../../core/services/appointments.service';
+import { AppointmentFormComponent } from '../apointment-form/appointment-form.component';
 
 @Component({
   selector: 'app-create-appointment',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
+  imports: [MatButtonModule],
   templateUrl: './create-appointment.component.html',
   styleUrl: './create-appointment.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateAppointmentComponent {
-  private readonly formBuilder = inject(FormBuilder);
-  private readonly appointmentsService = inject(AppointmentsService);
+  private readonly dialog = inject(MatDialog);
+  public readonly selectedDate = input(new Date());
 
-  public selectedDate = input(new Date());
-
-  public get nameControl(): FormControl {
-    return this.form.get('name') as FormControl;
-  }
-  public get hourControl(): FormControl {
-    return this.form.get('hour') as FormControl;
-  }
-
-  public readonly form = this.formBuilder.group({
-    name: ['', Validators.required],
-    hour: ['', [Validators.required, Validators.max(24)]],
-  });
-
-  public onSubmit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    const appointmentObject: AppointmentModel = {
-      name: this.nameControl.value,
-      hour: this.hourControl.value,
-      date: this.selectedDate(),
-      id: this.appointmentsService.appointments().length,
-    };
-
-    this.appointmentsService.addAppointment(appointmentObject);
+  public openDialog(): void {
+    this.dialog.open(AppointmentFormComponent, {
+      data: { date: this.selectedDate() } as Partial<AppointmentModel>,
+    });
   }
 }

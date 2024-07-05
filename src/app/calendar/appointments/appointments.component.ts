@@ -4,19 +4,35 @@ import {
   CdkDropList,
   CdkDropListGroup,
 } from '@angular/cdk/drag-drop';
-import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+  input,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatTableModule } from '@angular/material/table';
-import { AppointmentModel } from '../../core/models/appointment.model';
-import { AppointmentsService } from '../../core/services/appointments.service';
 import { tap } from 'rxjs';
+import { AmPmPipe } from '../../core/pipes/am-pm.pipe';
+import { AppointmentsService } from '../../core/services/appointments.service';
+import { AppointmentComponent } from '../appointment/appointment.component';
 
 @Component({
   selector: 'app-appointments',
   standalone: true,
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, MatTableModule],
+  imports: [
+    CdkDropListGroup,
+    CdkDropList,
+    CdkDrag,
+    MatTableModule,
+    AppointmentComponent,
+    AmPmPipe,
+  ],
   templateUrl: './appointments.component.html',
   styleUrl: './appointments.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppointmentsComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
@@ -40,16 +56,13 @@ export class AppointmentsComponent implements OnInit {
       .subscribe();
   }
 
-  public deleteAppointment(appointment: AppointmentModel): void {
-    this.appointmentsService.removeAppointment(appointment);
-  }
+  public drop(event: CdkDragDrop<any>, targetHour: number): void {
+    const draggedAppointmentId =
+      event.item.element.nativeElement.id.split('-')[1];
 
-  public drop(event: CdkDragDrop<string[]>): void {
-    if (event.item.element.nativeElement.children.length > 0) {
-      this.appointmentsService.updateAppointmentHour(
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
+    this.appointmentsService.updateAppointmentHour(
+      Number(draggedAppointmentId),
+      targetHour,
+    );
   }
 }

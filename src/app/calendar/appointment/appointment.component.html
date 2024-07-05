@@ -1,0 +1,17 @@
+<div
+  cdkDrag
+  class="appointment"
+  [style]="{
+    height: appointment().duration * 50 + 'px',
+    backgroundColor: getAppointmentColor(),
+  }"
+>
+  <div class="appointment-title">
+    <p>{{ appointment().name | titlecase }}</p>
+    <button (click)="deleteAppointment()">X</button>
+  </div>
+
+  <p class="appointment-time">
+    {{ appointment().start | amPm }} - {{ appointment().end | amPm }}
+  </p>
+</div>

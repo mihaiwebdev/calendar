@@ -1,6 +1,9 @@
 export interface AppointmentModel {
   name: string;
-  hour: number;
+  start: number;
+  end: number;
+  duration: number;
   date: Date;
   id: number;
+  color: number[];
 }

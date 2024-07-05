@@ -1,0 +1,49 @@
+<form [formGroup]="form" class="appointment-form">
+  <h1>
+    Create appointment on {{ selectedDate && selectedDate.toDateString() }}
+  </h1>
+  <mat-form-field class="form-field">
+    <mat-label>Title</mat-label>
+    <input
+      type="text"
+      matInput
+      formControlName="name"
+      placeholder="Ex. Go to dentist"
+    />
+    @if (nameControl.touched && nameControl.invalid) {
+      <mat-error>Name is invalid</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="form-field">
+    <mat-label>Start hour</mat-label>
+    <input
+      type="number"
+      max="24"
+      matInput
+      formControlName="start"
+      placeholder="Ex. 10"
+    />
+    @if (startControl.touched && startControl.invalid) {
+      <mat-error>Start Hour is invalid</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="form-field">
+    <mat-label>End hour</mat-label>
+    <input
+      type="number"
+      max="24"
+      matInput
+      formControlName="end"
+      placeholder="Ex. 10"
+    />
+    @if (startControl.touched && startControl.invalid) {
+      <mat-error>End Hour is invalid</mat-error>
+    }
+  </mat-form-field>
+
+  <button (click)="onSubmit()" mat-raised-button class="add-btn">
+    Add appointment
+  </button>
+</form>

@@ -15,7 +15,6 @@ export class AppointmentsService {
 
   public addAppointment(appointment: AppointmentModel): void {
     this.state.appointments.update((state) => [...state, appointment]);
-
     this.getAppointments(appointment.date);
   }
 
@@ -39,14 +38,17 @@ export class AppointmentsService {
 
     this.getAppointments(appointment.date);
   }
-  public updateAppointmentHour(previousIndex: number, currentIndex: number) {
+
+  public updateAppointmentHour(appointmendId: number, targetHour: number) {
     this.state.appointments.update((state) => {
       const appointment = state.find(
-        (appointment) => appointment.hour === previousIndex + 1,
+        (appointment) => appointment.id === appointmendId,
       );
+
       if (!appointment) return state;
 
-      appointment.hour = currentIndex + 1;
+      appointment.start = targetHour;
+      appointment.end = appointment.duration + targetHour;
 
       return state;
     });
